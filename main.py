@@ -18,4 +18,4 @@ def resize():
             imResize.save(resized_images_path + 'resized_' + item, 'JPEG', quality=90)
 
 
-resize()
+#resize()
