@@ -19,3 +19,20 @@ def resize():
 
 
 #resize()
+
+def get_avg_RGB(img):
+    """
+    Given PIL Image,calculate the average RGB values,
+    and define this as the average color of the image.
+    """
+    R = []
+    G = []
+    B = []
+    width, height = img.size
+    for w in range(width):
+        for h in range(height):
+            r, g, b = img.getpixel((w, h))
+            R.append(r)
+            G.append(g)
+            B.append(b)
+    return [sum(R) / len(R), sum(G) / len(G), sum(B) / len(B)]
