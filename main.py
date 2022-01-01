@@ -1,8 +1,10 @@
 import os
 from PIL import Image
+from math import sqrt
 
 original_images_path = "data/original_images/"
 resized_images_path = "data/resized_images/"
+small_images_RGB_dict = {}
 input_image_RGB_dict = {}
 
 
@@ -51,3 +53,21 @@ def get_pixels_RGB(image):
             a = input_img.getpixel((w, h))
             input_image_RGB_dict['tile' + str(key)] = a
             key += 1
+
+
+def nearest():
+    """
+    For every pixel in 'input_image_RGB_dict', find closest tile from 'small_images_RGB_dict',
+    store them in 'final tiles' and return it .
+    The closest tile is the tile which has the minimum Euclidean distance between rgb values.
+    """
+    diff = {}
+    final_tiles = []  # a set of small images which will replaced the input image pixel
+    for pixel in input_image_RGB_dict.keys():
+        r_pixel, g_pixel, b_pixel = input_image_RGB_dict[pixel]
+        for tile in small_images_RGB_dict.keys():
+            r_tile, g_tile, b_tile = small_images_RGB_dict[tile]
+            distance = sqrt((r_pixel - r_tile) ** 2 + (g_pixel - g_tile) ** 2 + (b_pixel - b_tile) ** 2)
+            diff[tile] = distance
+        final_tiles.append(min(diff, key=diff.get))
+    return final_tiles
