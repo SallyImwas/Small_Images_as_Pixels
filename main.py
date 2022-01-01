@@ -71,3 +71,40 @@ def nearest():
             diff[tile] = distance
         final_tiles.append(min(diff, key=diff.get))
     return final_tiles
+
+
+def main():
+    # Store the new set of small_images along with
+    # RGB values in image_RGB_dict
+    for image in os.listdir(resized_images_path):
+        resized_img = Image.open(resized_images_path + image)
+        image_RGB = get_avg_RGB(resized_img)
+        small_images_RGB_dict[image] = image_RGB
+
+    # Get input_image  pixels RGB values
+    input_img_path = original_images_path + "big_image.jpg"
+    get_pixels_RGB(input_img_path)
+
+    # Get nearest tiles
+    tiles = nearest()
+
+    # Create an output image
+    output = Image.new('RGB', (4000, 4000))
+
+    # Draw tiles
+    k = 0
+    for i in range(200):
+        for j in range(200):
+            # Offset of tile
+            x, y = i * 20, j * 20
+            # Draw tile
+            final_tile = Image.open(resized_images_path + tiles[k])
+            output.paste(final_tile, (x, y))
+            k += 1
+
+    # Save output
+    output.save("output.jpg")
+
+
+if __name__ == "__main__":
+    main()
