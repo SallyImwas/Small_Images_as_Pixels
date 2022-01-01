@@ -3,6 +3,7 @@ from PIL import Image
 
 original_images_path = "data/original_images/"
 resized_images_path = "data/resized_images/"
+input_image_RGB_dict = {}
 
 
 def resize():
@@ -18,7 +19,7 @@ def resize():
             imResize.save(resized_images_path + 'resized_' + item, 'JPEG', quality=90)
 
 
-#resize()
+# resize()
 
 def get_avg_RGB(img):
     """
@@ -36,3 +37,17 @@ def get_avg_RGB(img):
             G.append(g)
             B.append(b)
     return [sum(R) / len(R), sum(G) / len(G), sum(B) / len(B)]
+
+
+def get_pixels_RGB(image):
+    """
+    Given PIL image, store pixels RGB values  in 'Big_image_RGB_dict'.
+    """
+    input_img = Image.open(image)
+    width, height = input_img.size
+    key = 0  # used as dictionary key
+    for w in range(width):
+        for h in range(height):
+            a = input_img.getpixel((w, h))
+            input_image_RGB_dict['tile' + str(key)] = a
+            key += 1
